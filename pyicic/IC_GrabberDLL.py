@@ -4,7 +4,6 @@
 from __future__ import absolute_import
 from builtins import object
 from ctypes import *
-import os
 
 from . import IC_Structures as structs
 
@@ -16,7 +15,7 @@ class IC_GrabberDLL(object):
     GrabberHandlePtr = POINTER(structs.GrabberHandle)
     
     # win32
-    _ic_grabber_dll = windll.LoadLibrary('tisgrabber_x64.dll')
+    _ic_grabber_dll = windll.LoadLibrary('tisgrabber.dll')
 
     #//////////////////////////////////////////////////////////////////////////
     #/*! Initialize the ICImagingControl class library. This function must be called
@@ -363,8 +362,8 @@ class IC_GrabberDLL(object):
     #int AC IC_IsCameraPropertyAutoAvailable( HGRABBER hGrabber, CAMERA_PROPERTY iProperty ); ///<Check whether automation for a camera property is available.
     is_camera_property_auto_available = _ic_grabber_dll.IC_IsCameraPropertyAutoAvailable
     is_camera_property_auto_available.restype = c_int
-    is_camera_property_auto_available.argtypes = {GrabberHandlePtr,
-                                                  c_int}
+    is_camera_property_auto_available.argtypes = (GrabberHandlePtr,
+                                                  c_int)
     
     #int AC IC_GetAutoCameraProperty( HGRABBER hGrabber, int iProperty, int *iOnOff ); ///<Retrieve whether automatic is enabled for the specifield camera property.
     get_auto_camera_property = _ic_grabber_dll.IC_GetAutoCameraProperty
@@ -647,7 +646,7 @@ class IC_GrabberDLL(object):
     list_video_formats = _ic_grabber_dll.IC_ListVideoFormats
     list_video_formats.restype = c_int
     list_video_formats.argtypes = (GrabberHandlePtr,
-                                   POINTER((c_char * 80) * 40),
+                                   POINTER((c_char * 80) * 60),
                                    c_int)
     
     #//////////////////////////////////////////////////////////////////////////
