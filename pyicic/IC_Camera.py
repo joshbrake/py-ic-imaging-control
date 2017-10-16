@@ -164,7 +164,7 @@ class IC_Camera(object):
         """
         :returns: list -- available video formats.
         """
-        vf_list = ((c_char * 80) * 40)()
+        vf_list = ((c_char * 80) * 60)()
         num_vfs = IC_GrabberDLL.list_video_formats(self._handle,
                                                    byref(vf_list),
                                                    c_int(80))
