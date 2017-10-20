@@ -4,7 +4,7 @@
 from __future__ import absolute_import
 from builtins import object
 from ctypes import *
-
+import sys,os
 from . import IC_Structures as structs
 
 class IC_GrabberDLL(object):
@@ -13,10 +13,23 @@ class IC_GrabberDLL(object):
     """
     
     GrabberHandlePtr = POINTER(structs.GrabberHandle)
-    
-    # win32
-    _ic_grabber_dll = windll.LoadLibrary('tisgrabber.dll')
 
+    # Code to change to right directory for loading .dlls
+    # .dlls should be in /bin/<arch_name>/ folder in root folder of repository
+    # alternatively, they can be anywhere on the search path (along with the 
+    # dependencies of 'tisgrabber.dll' or 'tisgrabber_x64.dll')
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    os.chdir(dir_path)
+    
+    if sys.maxsize > 2**32:    
+        os.chdir('../bin/x64/')
+        _ic_grabber_dll = windll.LoadLibrary('tisgrabber_x64.dll')
+    else:
+        os.chdir('../bin/win32/')
+        _ic_grabber_dll = windll.LoadLibrary('tisgrabber.dll')
+
+    os.chdir(dir_path)
+    
     #//////////////////////////////////////////////////////////////////////////
     #/*! Initialize the ICImagingControl class library. This function must be called
     #    only once before any other functions of this library are called.
